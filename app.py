@@ -34,7 +34,7 @@ RESUME_FOLDER = ""              # Root directory in the repo where resumes are s
 # Base URL for GitHub API
 GITHUB_API_BASE = "https://api.github.com/"
 
-# Download NLTK data
+# Download NLTK data quietly
 nltk.download('stopwords', quiet=True)
 nltk.download('punkt', quiet=True)
 
@@ -213,6 +213,7 @@ class ResumeAnalyzer:
         """Sanitize user input to prevent security vulnerabilities."""
         return escape(user_input)
 
+
 def main():
     # Title
     st.title("AI-Powered ATS Résumé Analyzer")
@@ -311,6 +312,7 @@ def main():
     # Footer
     st.markdown("---")
     st.markdown("© 2024 AI-Powered ATS Résumé Analyzer. All rights reserved.")
+
 
 if __name__ == "__main__":
     main()
