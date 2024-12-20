@@ -29,7 +29,7 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 GITHUB_USER = "UsernameTron"  # Replace with your GitHub username
 GITHUB_REPO = "ATS_Resume"     # Replace with your repository name
 GITHUB_BRANCH = "main"         # Replace with your repository's default branch
-RESUME_FOLDER = "resumes/"      # Folder in the repo where resumes are stored
+RESUME_FOLDER = ""              # Root directory in the repo where resumes are stored
 
 # Base URL for GitHub API
 GITHUB_API_BASE = "https://api.github.com/"
