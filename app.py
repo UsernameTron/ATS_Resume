@@ -17,7 +17,7 @@ from html import escape
 from urllib.parse import urljoin
 
 # Load environment variables from the .env file
-load_dotenv()  # Assumes .env is in the current directory
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -34,12 +34,9 @@ RESUME_FOLDER = ""              # Root directory in the repo where resumes are s
 # Base URL for GitHub API
 GITHUB_API_BASE = "https://api.github.com/"
 
-# Base URL for raw content
-GITHUB_RAW_BASE = "https://raw.githubusercontent.com/"
-
 # Download NLTK data
-nltk.download('stopwords')
-nltk.download('punkt')  # Correct resource name
+nltk.download('stopwords', quiet=True)
+nltk.download('punkt', quiet=True)
 
 class ResumeAnalyzer:
     @staticmethod
@@ -104,7 +101,7 @@ class ResumeAnalyzer:
     def extract_keywords(text):
         """Extract significant keywords from the text using NLP techniques."""
         stop_words = set(stopwords.words('english'))
-        words = word_tokenize(text.lower())  # Correct resource name
+        words = word_tokenize(text.lower())
         keywords = [word for word in words if word.isalnum() and word not in stop_words]
         logging.info(f"Extracted {len(keywords)} keywords from text.")
         return keywords
@@ -121,18 +118,12 @@ class ResumeAnalyzer:
         Returns:
             float: The keyword density percentage rounded to two decimal places.
         """
-        # Extract all words from the text
         words = re.findall(r'\w+', text.lower())
         total_words = len(words)
-
-        # Count occurrences of each keyword
         keyword_counts = Counter(word for word in words if word in keywords)
         total_keywords = sum(keyword_counts.values())
-
-        # Calculate density
         density = (total_keywords / total_words) * 100 if total_words > 0 else 0
         density_rounded = round(density, 2)
-
         logging.info(f"Calculated keyword density: {density_rounded}%")
         return density_rounded
 
@@ -155,7 +146,7 @@ class ResumeAnalyzer:
             3. Strengths of the candidate based on the résumé.
             4. Areas for improvement in the résumé to better match the job description.
             """
-            response = await openai.AsyncChatCompletion.acreate(
+            response = await openai.ChatCompletion.acreate(
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "You are a helpful assistant."},
@@ -188,7 +179,7 @@ class ResumeAnalyzer:
 
             Optimized Résumé:
             """
-            response = await openai.AsyncChatCompletion.acreate(
+            response = await openai.ChatCompletion.acreate(
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "You are a helpful assistant."},
@@ -221,7 +212,6 @@ class ResumeAnalyzer:
     def sanitize_input(user_input):
         """Sanitize user input to prevent security vulnerabilities."""
         return escape(user_input)
-
 
 def main():
     # Title
@@ -321,7 +311,6 @@ def main():
     # Footer
     st.markdown("---")
     st.markdown("© 2024 AI-Powered ATS Résumé Analyzer. All rights reserved.")
-
 
 if __name__ == "__main__":
     main()
